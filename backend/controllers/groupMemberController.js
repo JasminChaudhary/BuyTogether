@@ -6,7 +6,12 @@ import dotenv from "dotenv";
 import { sendEmail, buildPropertyTokenEmail } from "../utils/emailService.js";
 
 dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_mock");
+// Fail fast if secret key is not configured (mock keys cause Stripe 401).
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeSecretKey) {
+    throw new Error("Missing STRIPE_SECRET_KEY environment variable");
+}
+const stripe = new Stripe(stripeSecretKey);
 
 // @desc    Join a property group
 // @route   POST /api/group-members/join/:propertyId

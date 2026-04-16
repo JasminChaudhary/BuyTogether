@@ -3,8 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Initialize Stripe with the secret key from environment variables
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_mock");
+// Initialize Stripe with the secret key from environment variables.
+// If missing, we fail fast instead of using a mock key (which breaks /confirm with 401).
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeSecretKey) {
+  throw new Error("Missing STRIPE_SECRET_KEY environment variable");
+}
+const stripe = new Stripe(stripeSecretKey);
 
 // @desc    Create a payment intent
 // @route   POST /api/payments/create-intent

@@ -5,7 +5,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import StripePaymentForm from './StripePaymentForm';
 import { API_BASE_URL , getImageUrl } from "../../common/config";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_mock");
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
 const JoinGroupDialog = ({ isOpen, property, onClose, onConfirm }) => {
     const [agreed, setAgreed] = useState(false);
@@ -59,27 +60,51 @@ const JoinGroupDialog = ({ isOpen, property, onClose, onConfirm }) => {
         <div style={styles.overlay} onClick={onClose}>
             <div style={{...styles.dialog, maxWidth: clientSecret ? "1000px" : "500px", padding: clientSecret ? "0" : "32px"}} onClick={(e) => e.stopPropagation()}>
                 {clientSecret ? (
-                    <Elements stripe={stripePromise} options={{ clientSecret }}>
-                        <StripePaymentForm 
-                            clientSecret={clientSecret} 
-                            onPaymentSuccess={handlePaymentSuccess} 
-                            onCancel={() => setClientSecret("")}
-                            orderSummary={{
-                                total: property.tokenAmount,
-                                items: [
-                                    {
-                                        name: property.projectName,
-                                        subtitle: property.city?.name || 'Group Phase',
-                                        quantity: 1,
-                                        price: property.tokenAmount,
-                                        image: property.images && property.images.length > 0 
-                                            ? (property.images[0].startsWith('http') ? property.images[0] : getImageUrl(property.images[0]))
-                                            : null
-                                    }
-                                ]
-                            }} 
-                        />
-                    </Elements>
+                    !stripePromise ? (
+                        <div style={{ padding: 24 }}>
+                            <h3 style={{ margin: 0, color: "#b91c1c" }}>Stripe is not configured</h3>
+                            <p style={{ marginTop: 8, color: "#4b5563" }}>
+                                Missing <code>VITE_STRIPE_PUBLISHABLE_KEY</code> on your Render frontend.
+                            </p>
+                            <button
+                                onClick={() => setClientSecret("")}
+                                style={{
+                                    marginTop: 16,
+                                    backgroundColor: "#e5e7eb",
+                                    color: "#374151",
+                                    border: "none",
+                                    padding: "10px 16px",
+                                    borderRadius: 8,
+                                    cursor: "pointer",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    ) : (
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                            <StripePaymentForm 
+                                clientSecret={clientSecret} 
+                                onPaymentSuccess={handlePaymentSuccess} 
+                                onCancel={() => setClientSecret("")}
+                                orderSummary={{
+                                    total: property.tokenAmount,
+                                    items: [
+                                        {
+                                            name: property.projectName,
+                                            subtitle: property.city?.name || 'Group Phase',
+                                            quantity: 1,
+                                            price: property.tokenAmount,
+                                            image: property.images && property.images.length > 0 
+                                                ? (property.images[0].startsWith('http') ? property.images[0] : getImageUrl(property.images[0]))
+                                                : null
+                                        }
+                                    ]
+                                }} 
+                            />
+                        </Elements>
+                    )
                 ) : (
                     <>
                         <h2 style={styles.title}>Join Group Buying</h2>
