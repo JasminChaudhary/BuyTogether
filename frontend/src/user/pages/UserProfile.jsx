@@ -3,6 +3,7 @@ import api from "../../common/api";
 import CitySelectionModal from "../components/CitySelectionModal";
 import { Camera, MapPin, Mail, Phone, User, LogOut, Shield, Calendar, Building2, Wallet } from "lucide-react";
 import { toast } from "sonner";
+import { API_BASE_URL } from "../../common/config";
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);
@@ -142,7 +143,7 @@ const UserProfile = () => {
                                 <div className="w-28 h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100 flex items-center justify-center text-3xl font-bold text-gray-400">
                                     {user.profilePicture ? (
                                         <img
-                                            src={`http://localhost:5000/${user.profilePicture}`}
+                                            src={`${API_BASE_URL}/${user.profilePicture}`}
                                             alt="Profile"
                                             className="w-full h-full object-cover"
                                         />

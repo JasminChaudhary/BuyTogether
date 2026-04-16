@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../common/api";
+import { API_BASE_URL } from "../../common/config";
 
 const AdminProfile = () => {
     const [user, setUser] = useState(null);
@@ -107,7 +108,7 @@ const AdminProfile = () => {
                 <div style={styles.avatarContainer}>
                     {user.profilePicture ? (
                         <img
-                            src={`http://localhost:5000/${user.profilePicture}`}
+                            src={`${API_BASE_URL}/${user.profilePicture}`}
                             alt="Profile"
                             style={styles.avatarImage}
                         />

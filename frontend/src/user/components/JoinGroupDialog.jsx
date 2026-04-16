@@ -3,6 +3,7 @@ import api from "../../common/api";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripePaymentForm from './StripePaymentForm';
+import { API_BASE_URL } from "../../common/config";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_mock");
 
@@ -72,7 +73,7 @@ const JoinGroupDialog = ({ isOpen, property, onClose, onConfirm }) => {
                                         quantity: 1,
                                         price: property.tokenAmount,
                                         image: property.images && property.images.length > 0 
-                                            ? (property.images[0].startsWith('http') ? property.images[0] : `http://localhost:5000/${property.images[0].replace(/\\/g, '/')}`)
+                                            ? (property.images[0].startsWith('http') ? property.images[0] : `${API_BASE_URL}/${property.images[0].replace(/\\/g, '/')}`)
                                             : null
                                     }
                                 ]

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Home, Car, MapPin } from "lucide-react";
 import api from "../../common/api";
+import { API_BASE_URL } from "../../common/config";
 
 const FeaturedListingsSection = () => {
   const [activeTab, setActiveTab] = useState("properties");
@@ -123,7 +124,7 @@ const FeaturedListingsSection = () => {
 
 const PropertyCard = ({ property }) => {
   const imageUrl = property.images && property.images.length > 0 && property.images[0]
-    ? (property.images[0].startsWith('http') ? property.images[0] : `http://localhost:5000/${property.images[0]}`)
+    ? (property.images[0].startsWith('http') ? property.images[0] : `${API_BASE_URL}/${property.images[0]}`)
     : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80";
 
   return (
@@ -166,7 +167,7 @@ const DealershipCard = ({ dealership }) => {
       <div style={styles.cardImage}>
         {dealership.images && dealership.images.length > 0 && dealership.images[0] ? (
           <img
-            src={dealership.images[0].startsWith('http') ? dealership.images[0] : `http://localhost:5000/${dealership.images[0].replace(/\\/g, '/')}`}
+            src={dealership.images[0].startsWith('http') ? dealership.images[0] : `${API_BASE_URL}/${dealership.images[0].replace(/\\/g, '/')}`}
             alt={dealership.name}
             style={styles.image}
             onError={(e) => {

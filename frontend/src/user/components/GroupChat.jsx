@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import api from "../../common/api";
 import io from "socket.io-client";
 import { Send, ArrowLeft, MoreVertical, Phone, Video, Info, User, Check, CheckCheck } from "lucide-react";
+import { API_BASE_URL } from "../../common/config";
 
 let socket;
 
@@ -28,7 +29,7 @@ const GroupChat = () => {
 
     useEffect(() => {
         // Initialize Socket locally to avoid ghost connections
-        const newSocket = io("http://localhost:5000");
+        const newSocket = io(API_BASE_URL);
         socket = newSocket;
 
         newSocket.on("connect", () => {

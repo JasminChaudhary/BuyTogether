@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../common/api";
 import { MapPin, Phone, User, Car } from "lucide-react";
+import { API_BASE_URL } from "../../common/config";
 
 const DealershipListing = () => {
     const [dealerships, setDealerships] = useState([]);
@@ -88,7 +89,7 @@ const DealershipListing = () => {
                             {dealership.images && dealership.images.length > 0 && (
                                 <div style={{ ...styles.coverImageWrapper, marginBottom: '16px' }}>
                                     <img
-                                        src={dealership.images[0].startsWith('http') ? dealership.images[0] : `http://localhost:5000/${dealership.images[0].replace(/\\/g, '/')}`}
+                                        src={dealership.images[0].startsWith('http') ? dealership.images[0] : `${API_BASE_URL}/${dealership.images[0].replace(/\\/g, '/')}`}
                                         alt={dealership.name}
                                         style={styles.coverImage}
                                     />

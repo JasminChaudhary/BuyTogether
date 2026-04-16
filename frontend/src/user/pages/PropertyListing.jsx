@@ -4,6 +4,7 @@ import { MapPin, Home, ArrowRight, Building, Clock, Users, Heart } from "lucide-
 import api from "../../common/api";
 import GroupProgressBar from "../../common/components/GroupProgressBar";
 import StatusBadge from "../../common/components/StatusBadge";
+import { API_BASE_URL } from "../../common/config";
 
 const PropertyListing = () => {
     const [properties, setProperties] = useState([]);
@@ -118,7 +119,7 @@ const PropertyListing = () => {
                 <div style={styles.grid}>
                     {properties.map((property) => {
                         const imageUrl = property.images && property.images.length > 0
-                            ? (property.images[0].startsWith('http') ? property.images[0] : `http://localhost:5000/${property.images[0].replace(/\\/g, '/')}`)
+                            ? (property.images[0].startsWith('http') ? property.images[0] : `${API_BASE_URL}/${property.images[0].replace(/\\/g, '/')}`)
                             : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80";
 
                         return (

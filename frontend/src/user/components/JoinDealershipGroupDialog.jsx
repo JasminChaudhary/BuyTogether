@@ -3,6 +3,7 @@ import api from "../../common/api";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripePaymentForm from './StripePaymentForm';
+import { API_BASE_URL } from "../../common/config";
 
 // Initialize Stripe with the publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_mock");
@@ -73,7 +74,7 @@ const JoinDealershipGroupDialog = ({ isOpen, dealership, onClose, onConfirm }) =
                                         quantity: 1,
                                         price: dealership.tokenAmount || 5000,
                                         image: dealership.images && dealership.images.length > 0 
-                                            ? (dealership.images[0].startsWith('http') ? dealership.images[0] : `http://localhost:5000/${dealership.images[0].replace(/\\/g, '/')}`)
+                                            ? (dealership.images[0].startsWith('http') ? dealership.images[0] : `${API_BASE_URL}/${dealership.images[0].replace(/\\/g, '/')}`)
                                             : null
                                     }
                                 ]
