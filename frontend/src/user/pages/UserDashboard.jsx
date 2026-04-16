@@ -4,7 +4,7 @@ import api from "../../common/api";
 import MyGroups from './MyGroups';
 import UserProfile from './UserProfile';
 import { Bell, Heart, Users, Settings, Plus, TrendingUp, MapPin, Building, Car, X } from "lucide-react";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL , getImageUrl } from "../../common/config";
 
 const UserDashboard = () => {
     const navigate = useNavigate();
@@ -121,7 +121,7 @@ const UserDashboard = () => {
                         <div style={styles.avatar}>
                             {user.profilePicture ? (
                                 <img
-                                    src={`${API_BASE_URL}/${user.profilePicture}`}
+                                    src={getImageUrl(user.profilePicture)}
                                     alt="Profile"
                                     style={styles.avatarImg}
                                 />
@@ -232,7 +232,7 @@ const UserDashboard = () => {
                                     <div style={styles.savedGrid}>
                                         {savedProperties.map((property) => {
                                             const imageUrl = property.images && property.images.length > 0
-                                                ? (property.images[0].startsWith('http') ? property.images[0] : `${API_BASE_URL}/${property.images[0].replace(/\\/g, '/')}`)
+                                                ? (property.images[0].startsWith('http') ? property.images[0] : getImageUrl(property.images[0]))
                                                 : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80";
                                                 
                                             return (

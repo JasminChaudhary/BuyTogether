@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import api from "../../common/api";
 import { FaBuilding, FaPlus, FaMapMarkerAlt, FaPhone, FaTrash, FaFilter, FaChevronDown, FaChevronUp, FaCar, FaImage, FaSearch, FaTimes, FaEdit, FaInfoCircle, FaUser, FaUsers } from "react-icons/fa";
 import MapComponent from "../../common/components/MapComponent";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL , getImageUrl } from "../../common/config";
 
 const DealershipManagement = () => {
     const [dealerships, setDealerships] = useState([]);
@@ -476,7 +476,7 @@ const DealershipManagement = () => {
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                             {editingDealership.images.map((img, idx) => (
                                                 <div key={idx} className="relative group rounded-lg overflow-hidden border border-gray-200 h-24">
-                                                    <img src={`${API_BASE_URL}/${img.replace(/\\/g, '/')}`} alt={`Dealership ${idx}`} className="w-full h-full object-cover" />
+                                                    <img src={getImageUrl(img)} alt={`Dealership ${idx}`} className="w-full h-full object-cover" />
                                                     <button type="button" onClick={() => handleDeleteImage(img)} className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600">
                                                         <FaTrash size={12} />
                                                     </button>
@@ -532,7 +532,7 @@ const DealershipManagement = () => {
                                     {/* Card Image */}
                                     <div className="h-48 bg-gray-100 relative overflow-hidden">
                                         {dealership.images && dealership.images.length > 0 ? (
-                                            <img src={`${API_BASE_URL}/${dealership.images[0].replace(/\\/g, '/')}`} alt={dealership.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                            <img src={getImageUrl(dealership.images[0])} alt={dealership.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-gray-400">
                                                 <FaCar size={40} />
@@ -605,7 +605,7 @@ const DealershipManagement = () => {
                                             {selectedDealership.images.map((img, idx) => (
                                                 <div key={idx} className="rounded-xl overflow-hidden shadow-sm border border-gray-100 h-32 md:h-40 group cursor-pointer" onClick={() => setImageViewer(img)}>
                                                     <img
-                                                        src={`${API_BASE_URL}/${img.replace(/\\/g, '/')}`}
+                                                        src={getImageUrl(img)}
                                                         alt={`Dealership ${idx}`}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                     />
@@ -707,7 +707,7 @@ const DealershipManagement = () => {
                 {/* Image Viewer (Reuse from PropertyManagement logic if needed, simplify here) */}
                 {imageViewer && (
                     <div className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4" onClick={() => setImageViewer(null)}>
-                        <img src={`${API_BASE_URL}/${imageViewer.replace(/\\/g, '/')}`} className="max-w-full max-h-full rounded-lg" />
+                        <img src={getImageUrl(imageViewer)} className="max-w-full max-h-full rounded-lg" />
                     </div>
                 )}
 

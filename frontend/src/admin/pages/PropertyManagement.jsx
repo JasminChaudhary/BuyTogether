@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import api from "../../common/api";
 import { FaBuilding, FaPlus, FaMapMarkerAlt, FaFilter, FaInfoCircle, FaUsers, FaRupeeSign, FaCalendarAlt, FaEdit, FaTrash, FaImage, FaFilePdf, FaTimes, FaSearch, FaMapPin } from "react-icons/fa";
 import MapComponent from "../../common/components/MapComponent";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL , getImageUrl } from "../../common/config";
 
 const PropertyManagement = () => {
     const [properties, setProperties] = useState([]);
@@ -461,7 +461,7 @@ const PropertyManagement = () => {
                                             {editingProperty.images.map((img, idx) => (
                                                 <div key={idx} className="relative group rounded-lg overflow-hidden border border-gray-200 h-24">
                                                     <img
-                                                        src={`${API_BASE_URL}/${img.replace(/\\/g, '/')}`}
+                                                        src={getImageUrl(img)}
                                                         alt={`Property ${idx}`}
                                                         className="w-full h-full object-cover"
                                                     />
@@ -487,7 +487,7 @@ const PropertyManagement = () => {
                                             <div className="flex items-center gap-3">
                                                 <FaFilePdf className="text-red-500 text-xl" />
                                                 <a
-                                                    href={`${API_BASE_URL}/${editingProperty.brochure.replace(/\\/g, '/')}`}
+                                                    href={getImageUrl(editingProperty.brochure)}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className="text-sm font-medium text-blue-700 hover:underline"
@@ -562,7 +562,7 @@ const PropertyManagement = () => {
                                             {selectedProperty.images.map((img, idx) => (
                                                 <div key={idx} className={`rounded-xl overflow-hidden shadow-sm border border-gray-100 h-40 ${idx === 0 ? "col-span-2 row-span-2 h-[21rem]" : ""}`}>
                                                     <img
-                                                        src={`${API_BASE_URL}/${img.replace(/\\/g, '/')}`}
+                                                        src={getImageUrl(img)}
                                                         alt={`Property ${idx}`}
                                                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer"
                                                         onClick={() => setImageViewer(img)}
@@ -639,7 +639,7 @@ const PropertyManagement = () => {
                                             <div className="bg-gray-50 rounded-xl p-5 space-y-4 border border-gray-100">
                                                 {selectedProperty.brochure ? (
                                                     <a
-                                                        href={`${API_BASE_URL}/${selectedProperty.brochure.replace(/\\/g, '/')}`}
+                                                        href={getImageUrl(selectedProperty.brochure)}
                                                         target="_blank"
                                                         rel="noreferrer"
                                                         className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-sm transition-all group"
@@ -740,7 +740,7 @@ const PropertyManagement = () => {
                         {/* Image Display */}
                         <div className="relative w-full h-full flex items-center justify-center p-16" onClick={(e) => e.stopPropagation()}>
                             <img
-                                src={`${API_BASE_URL}/${selectedProperty.images[currentImageIndex].replace(/\\/g, '/')}`}
+                                src={getImageUrl(selectedProperty.images[currentImageIndex])}
                                 alt={`Property ${currentImageIndex + 1}`}
                                 className="max-w-full max-h-full rounded-lg shadow-2xl object-contain"
                             />
@@ -839,7 +839,7 @@ const PropertyManagement = () => {
                                     <div className="h-48 bg-gray-100 relative overflow-hidden">
                                         {property.images && property.images.length > 0 ? (
                                             <img
-                                                src={`${API_BASE_URL}/${property.images[0].replace(/\\/g, '/')}`}
+                                                src={getImageUrl(property.images[0])}
                                                 alt={property.projectName}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />

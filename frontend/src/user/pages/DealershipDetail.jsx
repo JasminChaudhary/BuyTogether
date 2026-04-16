@@ -6,7 +6,7 @@ import { MapPin, Phone, User, Building2, Car, Info, Clock, CheckCircle } from "l
 import GroupProgressBar from "../../common/components/GroupProgressBar";
 import StatusBadge from "../../common/components/StatusBadge";
 import JoinDealershipGroupDialog from "../components/JoinDealershipGroupDialog";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL , getImageUrl } from "../../common/config";
 
 const DealershipDetail = () => {
     const { id } = useParams();
@@ -140,7 +140,7 @@ const DealershipDetail = () => {
                         {dealership.images && dealership.images.length > 0 && (
                             <div style={styles.imageGrid}>
                                 {dealership.images.map((img, index) => {
-                                    const imgUrl = img.startsWith('http') ? img : `${API_BASE_URL}/${img.replace(/\\/g, '/')}`;
+                                    const imgUrl = img.startsWith('http') ? img : getImageUrl(img);
                                     return (
                                         <div key={index} style={styles.imageItem}>
                                             <img

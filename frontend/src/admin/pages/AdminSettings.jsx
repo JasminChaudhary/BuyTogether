@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaCog, FaPalette, FaEnvelope, FaDollarSign, FaLock, FaChartBar, FaSave, FaUser } from "react-icons/fa";
 import api from "../../common/api";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL , getImageUrl } from "../../common/config";
 
 const AdminSettings = () => {
     const [activeTab, setActiveTab] = useState("profile");
@@ -167,7 +167,7 @@ const AdminSettings = () => {
                                     <div className="relative mb-4">
                                         {user.profilePicture ? (
                                             <img
-                                                src={`${API_BASE_URL}/${user.profilePicture}`}
+                                                src={getImageUrl(user.profilePicture)}
                                                 alt="Profile"
                                                 className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
                                             />

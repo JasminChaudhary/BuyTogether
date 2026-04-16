@@ -10,7 +10,7 @@ import GroupProgressBar from "../../common/components/GroupProgressBar";
 import StatusBadge from "../../common/components/StatusBadge";
 import JoinGroupDialog from "../components/JoinGroupDialog";
 import MapComponent from "../../common/components/MapComponent";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL , getImageUrl } from "../../common/config";
 
 const PropertyDetail = () => {
     const { id } = useParams();
@@ -37,7 +37,7 @@ const PropertyDetail = () => {
             if (propResponse.data.images && propResponse.data.images.length > 0) {
                 // Initialize selected image with the first image
                 const firstImg = propResponse.data.images[0];
-                setSelectedImage(firstImg.startsWith('http') ? firstImg : `${API_BASE_URL}/${firstImg.replace(/\\/g, '/')}`);
+                setSelectedImage(firstImg.startsWith('http') ? firstImg : getImageUrl(firstImg));
             }
 
             // Fetch group status if currentGroup exists
@@ -208,7 +208,7 @@ const PropertyDetail = () => {
                             {property.images && property.images.length > 1 && (
                                 <div style={styles.thumbnailGrid}>
                                     {property.images.map((img, index) => {
-                                        const imgUrl = img.startsWith('http') ? img : `${API_BASE_URL}/${img.replace(/\\/g, '/')}`;
+                                        const imgUrl = img.startsWith('http') ? img : getImageUrl(img);
                                         return (
                                             <div
                                                 key={index}
@@ -357,7 +357,7 @@ const PropertyDetail = () => {
 
                             {property.brochure && (
                                 <a
-                                    href={`${API_BASE_URL}/${property.brochure}`}
+                                    href={getImageUrl(property.brochure)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     style={styles.brochureLink}

@@ -86,7 +86,7 @@ const MyGroups = ({ embedded }) => {
     const getImageUrl = (images) => {
         if (!images || images.length === 0) return "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80";
         const img = images[0];
-        return img.startsWith('http') ? img : `${API_BASE_URL}/${img.replace(/\\/g, '/')}`;
+        return img.startsWith('http') ? img : getImageUrl(img);
     };
 
     return (
