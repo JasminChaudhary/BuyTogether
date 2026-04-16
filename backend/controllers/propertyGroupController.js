@@ -12,6 +12,10 @@ export const getAllPropertyGroups = async (req, res) => {
                 path: "property",
                 populate: { path: "city" }
             })
+            .populate({
+                path: "members",
+                populate: { path: "buyer", select: "name email" }
+            })
             .sort({ createdAt: -1 });
 
         res.json(groups);
