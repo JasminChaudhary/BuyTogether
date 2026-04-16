@@ -40,6 +40,15 @@ const GroupChat = () => {
             setMessages((prev) => {
                 // Prevent duplicate messages
                 if (prev.find(m => m._id === message._id)) return prev;
+                
+                const currentUserId = JSON.parse(localStorage.getItem("user") || "{}")._id;
+                if (message.sender && message.sender._id === currentUserId) {
+                    const tempMsg = prev.find(m => m.isTemp && m.message === message.message);
+                    if (tempMsg) {
+                        return prev.map(m => m._id === tempMsg._id ? message : m);
+                    }
+                }
+                
                 return [...prev, message];
             });
         });
@@ -119,7 +128,12 @@ const GroupChat = () => {
             });
             
             // Replace temporary message with confirmed database message
-            setMessages((prev) => prev.map(m => m._id === tempId ? response.data : m));
+            setMessages((prev) => {
+                if (prev.find(m => m._id === response.data._id)) {
+                    return prev.filter(m => m._id !== tempId);
+                }
+                return prev.map(m => m._id === tempId ? response.data : m);
+            });
         } catch (err) {
             alert(err.response?.data?.message || "Failed to send message");
             // Revert optimistic update on failure
