@@ -4,7 +4,7 @@ import { MapPin, Calendar, Building, Users, Clock, AlertCircle, MessageSquare, A
 import api from "../../common/api";
 import StatusBadge from "../../common/components/StatusBadge";
 import GroupProgressBar from "../../common/components/GroupProgressBar";
-import { API_BASE_URL } from "../../common/config";
+import { API_BASE_URL, getImageUrl } from "../../common/config";
 
 const MyGroups = ({ embedded }) => {
     const [memberships, setMemberships] = useState([]);
@@ -83,10 +83,14 @@ const MyGroups = ({ embedded }) => {
         return group.status === "CHAT_ENABLED" || group.status === "SUCCESSFUL";
     };
 
-    const getImageUrl = (images) => {
-        if (!images || images.length === 0) return "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80";
+    const getGroupIconUrl = (images) => {
+        if (!images || images.length === 0) {
+            return "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80";
+        }
+
         const img = images[0];
-        return img.startsWith('http') ? img : getImageUrl(img);
+        // `getImageUrl` expects a single path (string), not an array.
+        return img.startsWith("http") ? img : getImageUrl(img);
     };
 
     return (
@@ -145,7 +149,7 @@ const MyGroups = ({ embedded }) => {
 
                         const title = isDealership ? item.name : item.projectName;
                         const subtitle = isDealership ? item.brand : item.builderName;
-                        const iconUrl = getImageUrl(item.images);
+                        const iconUrl = getGroupIconUrl(item.images);
                         const detailPath = isDealership ? `/user/dealerships/${item._id}` : `/user/properties/${item._id}`;
                         const chatPath = isDealership ? `/user/dealership-groups/${group._id}/chat` : `/user/groups/${group._id}/chat`;
 

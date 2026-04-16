@@ -25,61 +25,93 @@ import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
 import ProtectedRoute from "./common/ProtectedRoute";
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: 24, fontFamily: "system-ui, Arial" }}>
+          <h2 style={{ margin: "0 0 12px 0" }}>Something went wrong</h2>
+          <pre style={{ whiteSpace: "pre-wrap", color: "#b91c1c" }}>
+            {this.state.error?.message || "Unknown error"}
+          </pre>
+          <button onClick={() => window.location.reload()} style={{ marginTop: 12 }}>
+            Reload
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 const App = () => {
   return (
     <>
       <Toaster position="top-center" richColors />
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      <ErrorBoundary>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute allowedRole="ADMIN">
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<AdminDashboard />} />
-          <Route path="cities" element={<CityManagement />} />
-          <Route path="dealerships" element={<DealershipManagement />} />
-          <Route path="properties" element={<PropertyManagement />} />
-          <Route path="groups" element={<GroupManagement />} />
-          <Route path="profile" element={<AdminProfile />} />
-          <Route path="settings" element={<AdminSettings />} />
-          <Route path="groups/:groupId/chat" element={<GroupChat />} />
-          <Route path="dealership-groups/:groupId/chat" element={<GroupChat />} />
-        </Route>
+          {/* Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="cities" element={<CityManagement />} />
+            <Route path="dealerships" element={<DealershipManagement />} />
+            <Route path="properties" element={<PropertyManagement />} />
+            <Route path="groups" element={<GroupManagement />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="settings" element={<AdminSettings />} />
+            <Route path="groups/:groupId/chat" element={<GroupChat />} />
+            <Route path="dealership-groups/:groupId/chat" element={<GroupChat />} />
+          </Route>
 
-        {/* User Routes */}
-        <Route
-          path="/user"
-          element={
-            <ProtectedRoute allowedRole="BUYER">
-              <UserLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<UserLanding />} />
-          <Route path="dashboard" element={<UserDashboard />} />
-          <Route path="properties" element={<PropertyListing />} />
-          <Route path="dealerships" element={<DealershipListing />} />
-          <Route path="dealerships/:id" element={<DealershipDetail />} />
-          <Route path="properties/:id" element={<PropertyDetail />} />
-          <Route path="my-groups" element={<MyGroups />} />
-          <Route path="profile" element={<UserProfile />} />
-          <Route path="groups/:groupId/chat" element={<GroupChat />} />
-          <Route path="dealership-groups/:groupId/chat" element={<GroupChat />} />
-          <Route path="how-it-works" element={<HowItWorks />} />
-          <Route path="about" element={<About />} />
-        </Route>
+          {/* User Routes */}
+          <Route
+            path="/user"
+            element={
+              <ProtectedRoute allowedRole="BUYER">
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<UserLanding />} />
+            <Route path="dashboard" element={<UserDashboard />} />
+            <Route path="properties" element={<PropertyListing />} />
+            <Route path="dealerships" element={<DealershipListing />} />
+            <Route path="dealerships/:id" element={<DealershipDetail />} />
+            <Route path="properties/:id" element={<PropertyDetail />} />
+            <Route path="my-groups" element={<MyGroups />} />
+            <Route path="profile" element={<UserProfile />} />
+            <Route path="groups/:groupId/chat" element={<GroupChat />} />
+            <Route path="dealership-groups/:groupId/chat" element={<GroupChat />} />
+            <Route path="how-it-works" element={<HowItWorks />} />
+            <Route path="about" element={<About />} />
+          </Route>
 
-        {/* Default Route */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-      </Routes>
+          {/* Default Route */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </ErrorBoundary>
     </>
   );
 };

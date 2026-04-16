@@ -281,7 +281,6 @@ const styles = {
     },
     browseContainer: {
         position: "relative",
-        display: "inline-block",
         height: "100%", // Full height to help with hover
         display: "flex",
         alignItems: "center",
