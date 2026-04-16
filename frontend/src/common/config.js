@@ -20,6 +20,7 @@ export const getImageUrl = (path) => {
     if (!value || typeof value !== "string") return "";
 
     if (value.startsWith("http")) return value; // Already a full URL
+    if (value.startsWith("data:")) return value; // Base64 image
 
     // Replace Windows backslashes with forward slashes safely
     const safePath = value.replace(/\\/g, "/");

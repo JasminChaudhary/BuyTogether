@@ -7,14 +7,7 @@ import path from "path";
 const router = express.Router();
 
 // Multer Config
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, "uploads/");
-    },
-    filename(req, file, cb) {
-        cb(null, `${req.user._id}${path.extname(file.originalname)}`); // user_id.ext
-    },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage,

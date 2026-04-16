@@ -24,7 +24,7 @@ export const createDealership = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const images = req.files?.['images']?.map(file => `uploads/${file.filename}`) || [];
+        const images = req.files?.['images']?.map(file => `data:${file.mimetype};base64,${file.buffer.toString('base64')}`) || [];
 
         // Parse coordinates
         let parsedCoordinates = null;
@@ -182,7 +182,7 @@ export const updateDealership = async (req, res) => {
         } = req.body;
 
         if (req.files?.['images']) {
-            const newImages = req.files['images'].map(file => `uploads/${file.filename}`);
+            const newImages = req.files['images'].map(file => `data:${file.mimetype};base64,${file.buffer.toString('base64')}`);
             dealership.images = [...(dealership.images || []), ...newImages];
         }
 

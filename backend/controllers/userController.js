@@ -59,14 +59,14 @@ export const uploadProfilePicture = async (req, res) => {
         const user = await User.findById(req.user.id);
 
         if (req.file) {
-            user.profilePicture = `api/uploads/${req.file.filename}`; // Or just uploads/filename depending on how served
+            // user.profilePicture logic updated to base64
             // Ideally: served via static folder at root
             // If server.js has: app.use('/uploads', ...)
             // Then path is `/uploads/${req.file.filename}`
 
             // Let's stick to simple relative path and let frontend prepend server url if needed
             // OR store full relative URL
-            user.profilePicture = `uploads/${req.file.filename}`;
+            user.profilePicture = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
             await user.save();
 

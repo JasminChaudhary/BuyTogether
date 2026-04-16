@@ -24,8 +24,8 @@ export const createProperty = async (req, res) => {
             coordinates
         } = req.body;
 
-        const images = req.files?.['images']?.map(file => `uploads/${file.filename}`) || [];
-        const brochure = req.files?.['brochure']?.[0] ? `uploads/${req.files['brochure'][0].filename}` : null;
+        const images = req.files?.['images']?.map(file => `data:${file.mimetype};base64,${file.buffer.toString('base64')}`) || [];
+        const brochure = req.files?.['brochure']?.[0] ? `data:${req.files['brochure'][0].mimetype};base64,${req.files['brochure'][0].buffer.toString('base64')}` : null;
 
         // Validate required fields
         if (!projectName || !builderName || !city || !location || !propertyType ||
@@ -84,8 +84,8 @@ export const createProperty = async (req, res) => {
             groupJoiningDeadline: deadline,
             tokenAmount,
             groupRules,
-            images: images ? images.map(file => file.path) : [],
-            brochure: brochure && brochure.length > 0 ? brochure[0].path : null,
+            images: images || [],
+            brochure: brochure,
             currentGroup: null // Explicitly handle later
         });
 
@@ -225,12 +225,12 @@ export const updateProperty = async (req, res) => {
         } = req.body;
 
         if (req.files?.['images']) {
-            const newImages = req.files['images'].map(file => `uploads/${file.filename}`);
+            const newImages = req.files['images'].map(file => `data:${file.mimetype};base64,${file.buffer.toString('base64')}`);
             property.images = [...(property.images || []), ...newImages];
         }
 
         if (req.files?.['brochure']) {
-            property.brochure = `uploads/${req.files['brochure'][0].filename}`;
+            property.brochure = `data:${req.files['brochure'][0].mimetype};base64,${req.files['brochure'][0].buffer.toString('base64')}`;
         }
 
         // Validate property type if provided
