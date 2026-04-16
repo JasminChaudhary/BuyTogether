@@ -27,7 +27,9 @@ const AdminDashboard = () => {
                     totalCities: citiesRes.data?.filter(c => c.isActive)?.length || 0,
                     totalProperties: propertiesRes.data?.length || 0,
                     totalDealerships: dealershipsRes.data?.length || 0,
-                    totalGroups: (propGroupsRes.data?.length || 0) + (dealGroupsRes.data?.length || 0),
+                    totalGroups: 
+                        (propGroupsRes.data?.filter(g => g.property != null)?.length || 0) + 
+                        (dealGroupsRes.data?.filter(g => g.dealership != null)?.length || 0),
                 });
             } catch (err) {
                 console.error("Error fetching stats:", err);
